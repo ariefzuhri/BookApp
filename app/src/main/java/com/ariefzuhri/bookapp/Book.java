@@ -1,6 +1,9 @@
 package com.ariefzuhri.bookapp;
 
-public class Book {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Book implements Parcelable {
     private String title;
     private String author;
     private String image;
@@ -14,6 +17,25 @@ public class Book {
         this.image = image;
         this.description = description;
     }
+
+    protected Book(Parcel in) {
+        title = in.readString();
+        author = in.readString();
+        image = in.readString();
+        description = in.readString();
+    }
+
+    public static final Creator<Book> CREATOR = new Creator<Book>() {
+        @Override
+        public Book createFromParcel(Parcel in) {
+            return new Book(in);
+        }
+
+        @Override
+        public Book[] newArray(int size) {
+            return new Book[size];
+        }
+    };
 
     public String getTitle() {
         return title;
@@ -45,5 +67,18 @@ public class Book {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(title);
+        parcel.writeString(author);
+        parcel.writeString(image);
+        parcel.writeString(description);
     }
 }
